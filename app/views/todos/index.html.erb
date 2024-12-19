@@ -1,0 +1,19 @@
+<h1>Todo List</h1>
+
+<%= form_with(url: todos_path) do |f| %>
+  <%= f.text_field :task, name: 'todo[task]' %>
+  <%= f.submit "Add Todo" %>
+<% end %>
+
+<ul id="todo-list">
+  <% @todos.each do |todo| %>
+    <li id="todo-<%= todo.id %>">
+      <%= form_with model: todo, url: todo_path(todo), method: :patch, remote: true do |f| %>
+        <%= f.check_box :completed, checked: todo.completed %>
+        <%= f.text_field :task, value: todo.task %>
+        <%= f.submit "Update" %>
+      <% end %>
+      <%= button_to "Delete", todo_path(todo), method: :delete, remote: true %>
+    </li>
+  <% end %>
+</ul>
